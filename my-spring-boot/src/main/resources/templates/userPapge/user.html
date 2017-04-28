@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>d
+<body>
+欢迎你:<span th:text="${session.user.getUserName()}"></span>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>姓名</th>
+            <th>密码</th>
+            <th>状态</th>
+        </tr>
+        <tr  th:each="user,userStat: ${users}">
+            <td th:text="${user.userId}"></td>
+            <td th:text="${user.userName}"></td>
+            <td th:text="${user.userPwd}"></td>
+            <td th:text="${user.userType}"></td>
+
+        </tr>
+    </table>
+</body>
+</html>
