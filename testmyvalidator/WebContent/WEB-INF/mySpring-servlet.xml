@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/mvc   
+	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+
+	<!-- 启动注解驱动 -->
+	<mvc:annotation-driven validator="validator" />
+	<!--启用自动扫描 -->
+	<context:component-scan base-package="com.wode.controller" />
+
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean ">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+	</bean>
+	<!-- ViewResolver视图解析器 用于将返回的ModelAndView对象进行分离 -->
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView"></property>
+		<property name="prefix" value="/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	<!-- 拦截器（可以是多个）  -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 对所有/的路径拦截 -->
+			<mvc:mapping path="/*"/>
+			<!-- 除了path="/login2.do" 其他都拦截 -->
+			<mvc:exclude-mapping path="/login2.do"/>
+			<!-- 拦截器对应的类 -->
+			<bean class="com.wode.util.LoginInterceptor" id="LoginInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/*"/>
+			<bean class="com.wode.util.MyInterceptor" id="MyInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>
